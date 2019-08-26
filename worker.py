@@ -83,39 +83,66 @@ def init():
 	switch_frame_by_id(driver, pref.id_frame())
 	return driver
 
+# Login
 def login(driver):
 	try_send_keys_by_id(driver, pref.id_stuno_input(), pref.hakbun())
 	try_send_keys_by_id(driver, pref.id_password_input(), pref.password())
 	try_click_by_xpath(driver, pref.xpath_login_button())
 
+# Type query
 def search(driver):
 	try_click_by_xpath(driver, pref.xpath_query_by_name_button())
 	try_send_keys_by_id(driver, pref.id_query_input(), pref.target())
 
+# Click search and submit forever.
 def loop(driver):
-	error_count = 0
+	continuos_error_count = 0
+	previus_error = False
 	while True:
 		try:
+			# Click search button
 			try_click_by_xpath(driver, pref.xpath_search_button())
 			time.sleep(0.1)
+
+			# Click submit button
 			try_click_by_xpath(driver, pref.xpath_submit_button())
 			time.sleep(0.1)
 
+			# Leave a record.
 			print('.', end='')
 			sys.stdout.flush()
 
-		except KeyboardInterrupt:
-			driver.quit()
-			print('\nBye.')
-			sys.exit()
-		except:
-			error_count += 1
-			if error_count > 100:
-				print('Unrecoverable error occured. Bye.')
-				sys.exit()
+			# Mark it had no error last time.
+			previus_error = False
 
-			print('Unexpected. Keep going.')
+		except KeyboardInterrupt:
+			# Finish when keyboard KeyboardInterrupt raised.
+			finish(driver)
+
+		except:
+			# Finish when encountered over 100 times of
+			# continuos error.
+			# It means there happened a big problem.
+			if previus_error:
+				continuos_error_count += 1
+				if continuos_error_count > 100:
+					# Kill condition
+					print('Unrecoverable error occured.')
+					finish(driver)
+			else:
+				# Reset count if error finished.
+				continuos_error_count = 0
+
+			print('Unexpected exception. Keep going.')
 			sys.stdout.flush()
+
+			# Mark it had error last time.
+			previus_error = True
+
+def finish(driver):
+		driver.quit()
+		print('\nBye.')
+		sys.exit()
 
 ###########################################################
 # Execution
