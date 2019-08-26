@@ -108,6 +108,7 @@ def loop(driver):
 					lambda element:printnow(element.text))
 					one_time_task_done = True
 			else:
+				# Reset count. The dot is replaced by [!].
 				print_dot_count = 0
 
 				# Print error here because we gave False to [print_error]
