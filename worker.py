@@ -96,7 +96,7 @@ def search(driver):
 
 # Click search and submit forever.
 def loop(driver):
-	continuos_error_count = 0
+	continuous_error_count = 0
 	previous_error = False
 	while True:
 		try:
@@ -124,14 +124,17 @@ def loop(driver):
 			# continuos error.
 			# It means there happened a big problem.
 			if previus_error:
-				continuos_error_count += 1
-				if continuos_error_count > 100:
+				continuous_error_count += 1
+				print('Continues ' + str(continuous_error_count))
+				sys.stdout.flush()
+
+				if continuous_error_count > 100:
 					# Kill condition
 					print('Unrecoverable error occured.')
 					finish(driver)
 			else:
 				# Reset count if error finished.
-				continuos_error_count = 0
+				continuous_error_count = 0
 
 			print('Unexpected exception. Keep going.')
 			sys.stdout.flush()
