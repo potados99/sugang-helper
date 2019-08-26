@@ -16,7 +16,7 @@ def chromedriver_path():
 
 # Whether to go headless(no gui).
 def headless():
-	return True
+	return False
 
 
 ###########################################################
