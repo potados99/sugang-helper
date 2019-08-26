@@ -103,7 +103,7 @@ def loop(driver):
 	continuous_error_count = 0
 	previous_error = False
 	print_dot_count = 0
-	print_time_count = 100 # Print it at statt
+	print_time_count = 200 # Print it at statt
 	while True:
 		try:
 			# Click search button
