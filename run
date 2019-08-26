@@ -1,0 +1,5 @@
+#!/bin/bash
+
+./kill
+rm ./nohup.out
+nohup ./worker.py &

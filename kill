@@ -1,0 +1,6 @@
+#!/bin/bash
+
+killall Google\ Chrome
+killall chromedriver
+
+
