@@ -7,6 +7,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import datetime
 import time
 import sys
 
@@ -24,7 +25,8 @@ def try_element(driver, find_by_what, find_with, do_what):
 		EC.presence_of_element_located((find_by_what, find_with)))
 		do_what(element)
 	except:
-		printnow('Exception occured while trying to do somthing to an element.')
+		# Expected error.
+		printnow('!', end='')
 
 def try_send_keys(driver, find_by_what, find_with, keys):
 	try_element(driver, find_by_what, find_with, lambda element:element.send_keys(keys))
@@ -100,7 +102,8 @@ def search(driver):
 def loop(driver):
 	continuous_error_count = 0
 	previous_error = False
-	click_count = 0
+	print_dot_count = 0
+	print_time_count = 100 # Print it at statt
 	while True:
 		try:
 			# Click search button
@@ -112,10 +115,17 @@ def loop(driver):
 			time.sleep(0.1)
 
 			# Leave a record once a 10.
-			click_count += 1
-			if click_count >= 10:
+			print_dot_count += 1
+			if print_dot_count >= 10:
 				printnow('.', end='')
-				click_count = 0
+				print_dot_count = 0
+
+			# Print time
+			print_time_count += 1
+			if print_time_count >= 100:
+				now = datetime.datetime.now()
+				printnow('\n' + now.strftime("%Y-%m-%d %H:%M:%S"))
+				print_time_count = 0
 
 			# Mark it had no error last time.
 			previous_error = False
@@ -130,7 +140,7 @@ def loop(driver):
 			# It means there happened a big problem.
 			if previous_error:
 				continuous_error_count += 1
-				printnow('!(' + str(continuous_error_count) + ')', end='')
+				printnow('?(' + str(continuous_error_count) + ')', end='')
 
 				if continuous_error_count > 100:
 					# Kill condition
@@ -139,7 +149,7 @@ def loop(driver):
 			else:
 				# Reset count if error finished.
 				continuous_error_count = 0
-				printnow('!', end='')
+				printnow('?', end='')
 
 			# Mark it had error last time.
 			previous_error = True
