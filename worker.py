@@ -98,6 +98,7 @@ def search(driver):
 def loop(driver):
 	continuous_error_count = 0
 	previous_error = False
+	click_count = 0
 	while True:
 		try:
 			# Click search button
@@ -108,9 +109,12 @@ def loop(driver):
 			try_click_by_xpath(driver, pref.xpath_submit_button())
 			time.sleep(0.1)
 
-			# Leave a record.
-			print('.', end='')
-			sys.stdout.flush()
+			# Leave a record once a 10.
+			click_count += 1
+			if click_count >= 10:
+				print('.', end='')
+				sys.stdout.flush()
+				click_count = 0
 
 			# Mark it had no error last time.
 			previous_error = False
