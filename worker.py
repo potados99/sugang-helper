@@ -26,6 +26,7 @@ def try_element(driver, find_by_what, find_with, do_what):
 	except:
 		print('Exception occured while \
 		trying to do somthing to an element.')
+		sys.stdout.flush()
 
 def try_send_keys(driver, find_by_what, find_with, keys):
 	try_element(driver, find_by_what, find_with, lambda element:element.send_keys(keys))
