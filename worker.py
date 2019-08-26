@@ -78,10 +78,7 @@ def loop(driver):
 	previous_error = False
 	print_dot_count = 0
 	print_time_count = 200 # Print it at start
-
-	# To test we've got the right element.
-	try_do_element(driver, By.XPATH, pref.xpath_search_button(), lambda element:printnow(element.text))
-	try_do_element(driver, By.XPATH, pref.xpath_submit_button(), lambda element:printnow(element.text))
+	one_time_task_done = False
 
 	while True:
 		try:
@@ -99,6 +96,12 @@ def loop(driver):
 			# Dot should be display onley when 10 successes past.
 			if success_search and success_submit:
 				print_dot_count += 1
+
+				# To test we've got the right element.
+				if !one_time_task_done:
+					try_do_element(driver, By.XPATH, pref.xpath_search_button(), lambda element:printnow(element.text))
+					try_do_element(driver, By.XPATH, pref.xpath_submit_button(), lambda element:printnow(element.text))
+					one_time_task_done = True
 			else:
 				# Print error here because we gave False to [print_error]
 				printnow('!', end='')
