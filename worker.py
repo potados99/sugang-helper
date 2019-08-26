@@ -125,7 +125,7 @@ def loop(driver):
 			if previous_error:
 				continuous_error_count += 1
 				print_time()
-				printnow('?(' + str(continuous_error_count) + ')')
+				printnow('?(' + str(continuous_error_count) + ')', end='')
 			else:
 				continuous_error_count = 0
 				printnow('?', end='')
