@@ -23,22 +23,23 @@ from util import printnow
 # @param do_what		      What to do to the element.
 #
 # @return True if successfully done, False if StaleElementReferenceException raised.
-def try_element(driver, find_by_what, find_with, do_what, print_error=True):
+def try_do_element(driver, find_by_what, find_with, do_what, print_error=True):
 	try:
 		element = WebDriverWait(driver, 120).until( \
 		EC.presence_of_element_located((find_by_what, find_with)))
 		do_what(element)
 		return True
+
 	except StaleElementReferenceException:
 		if (print_error):
 			printnow('!', end='')
 		return False
 
 def try_send_keys(driver, find_by_what, find_with, keys, print_error=True):
-	return try_element(driver, find_by_what, find_with, lambda element:element.send_keys(keys), print_error=print_error)
+	return try_do_element(driver, find_by_what, find_with, lambda element:element.send_keys(keys), print_error=print_error)
 
 def try_click(driver, find_by_what, find_with, print_error=True):
-	return try_element(driver, find_by_what, find_with, lambda element:element.click(), print_error=print_error)
+	return try_do_element(driver, find_by_what, find_with, lambda element:element.click(), print_error=print_error)
 
 def try_send_keys_by_xpath(driver, xpath, keys, print_error=True):
 	return try_send_keys(driver, By.XPATH, xpath, keys, print_error=print_error)

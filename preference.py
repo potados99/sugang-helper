@@ -67,20 +67,24 @@ def id_query_input():
 
 # Xpath to login button
 def xpath_login_button():
-	return '//*[text()="로그인"]'
+	return xpath_by_text("로그인")
 
 # Xpath to 'query by name' button.
 def xpath_query_by_name_button():
-	return '//*[text()="과목명(코드)조회"]'
+	return xpath_by_text("과목명(코드)조회")
 
 # Xpath to search button.
 def xpath_search_button():
-	return '//*[text()="조회"]'
+	return xpath_by_text("조회")
 
 # Xpath to submit button.
 def xpath_submit_button():
 	index_str = str(target_index() + 1)
 	return '//table[@class="dataT"]/tbody/tr[' + index_str + ']/td[@class="last"]/a'
+
+# Create xpath that describes element(s) where text is same as given parameter.
+def xpath_by_text(text):
+	return '//*[text()="' + str(text) + '"]'
 
 # Delay between clicks
 def click_delay():

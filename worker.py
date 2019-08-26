@@ -63,10 +63,12 @@ def login(driver):
 	try_send_keys_by_id(driver, pref.id_stuno_input(), pref.hakbun())
 	try_send_keys_by_id(driver, pref.id_password_input(), pref.password())
 	try_click_by_xpath(driver, pref.xpath_login_button())
+	try_do_element(driver, By.XPATH, pref.xpath_login_button(), lambda element:printnow(element.text))
 
 # Type query
 def search(driver):
 	try_click_by_xpath(driver, pref.xpath_query_by_name_button())
+	try_do_element(driver, By.XPATH, pref.xpath_query_by_name_button(), lambda element:printnow(element.text))
 	try_send_keys_by_id(driver, pref.id_query_input(), pref.target())
 
 # Click search and submit forever.
@@ -75,6 +77,10 @@ def loop(driver):
 	previous_error = False
 	print_dot_count = 0
 	print_time_count = 200 # Print it at start
+
+	# To test we've got the right element.
+	try_do_element(driver, By.XPATH, pref.xpath_search_button(), lambda element:printnow(element.text))
+	try_do_element(driver, By.XPATH, pref.xpath_submit_button(), lambda element:printnow(element.text))
 
 	while True:
 		try:
