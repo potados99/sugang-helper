@@ -84,21 +84,19 @@ def loop(driver):
 
 	while True:
 		try:
-			success = True
-
 			# Click search button
-			success = success and try_click_by_xpath(driver, pref.xpath_search_button(), print_error=False)
+			success_search = try_click_by_xpath(driver, pref.xpath_search_button(), print_error=False)
 			time.sleep(pref.click_delay())
 
 			# Click submit button
-			success = success and try_click_by_xpath(driver, pref.xpath_submit_button(), print_error=False)
+			success_submit = try_click_by_xpath(driver, pref.xpath_submit_button(), print_error=False)
 			time.sleep(pref.click_delay())
 
 			# Time should be display wheather clicks are succeeded or failed.
 			print_time_count += 1
 
 			# Dot should be display onley when 10 successes past.
-			if success:
+			if success_search and success_submit:
 				print_dot_count += 1
 			else:
 				# Print error here because we gave False to [print_error]
