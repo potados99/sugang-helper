@@ -25,7 +25,7 @@ from util import printnow
 # @return True if successfully done, False if StaleElementReferenceException raised.
 def try_do_element(driver, find_by_what, find_with, do_what, print_error=True):
 	try:
-		element = WebDriverWait(driver, 120).until( \
+		element = WebDriverWait(driver, 5).until( \
 		EC.presence_of_element_located((find_by_what, find_with)))
 		do_what(element)
 		return True
