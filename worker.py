@@ -98,7 +98,7 @@ def loop(driver):
 				print_dot_count += 1
 
 				# To test we've got the right element.
-				if !one_time_task_done:
+				if not one_time_task_done:
 					try_do_element(driver, By.XPATH, pref.xpath_search_button(), lambda element:printnow(element.text))
 					try_do_element(driver, By.XPATH, pref.xpath_submit_button(), lambda element:printnow(element.text))
 					one_time_task_done = True
