@@ -4,6 +4,7 @@
 # Implment preference and run it with Python3.
 
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
@@ -22,8 +23,8 @@ def try_element(driver, find_by_what, find_with, do_what):
 		element = WebDriverWait(driver, 120).until( \
 		EC.presence_of_element_located((find_by_what, find_with)))
 		do_what(element)
-	except StaleElementReferenceException as e:
-		print('StaleElementReferenceException occured while \
+	except:
+		print('Exception occured while \
 		trying to do somthing to an element at ' + xpath + '.')
 
 def try_send_keys(driver, find_by_what, find_with, keys):
@@ -33,16 +34,16 @@ def try_click(driver, find_by_what, find_with):
 	try_element(driver, find_by_what, find_with, lambda element:element.click())
 
 def try_send_keys_by_xpath(driver, xpath, keys):
-	try_send_keys(driver, by.XPATH, xpath, keys)
+	try_send_keys(driver, By.XPATH, xpath, keys)
 
 def try_click_by_xpath(driver, xpath):
-	try_click(driver, by.XPATH, xpath)
+	try_click(driver, By.XPATH, xpath)
 
 def try_send_keys_by_id(driver, id, keys):
-	try_send_keys(driver, by.ID, id, keys)
+	try_send_keys(driver, By.ID, id, keys)
 
 def try_click_by_id(driver, id):
-	try_click(driver, by.ID, xpath)
+	try_click(driver, By.ID, xpath)
 
 
 ###########################################################
@@ -92,20 +93,29 @@ def search(driver):
 	try_send_keys_by_id(driver, pref.id_query_input(), pref.target())
 
 def loop(driver):
-	try:
-		while True:
+	error_count = 0
+	while True:
+		try:
 			try_click_by_xpath(driver, pref.xpath_search_button())
 			time.sleep(0.1)
 			try_click_by_xpath(driver, pref.xpath_submit_button())
 			time.sleep(0.1)
 
 			print('.', end='')
+			sys.stdout.flush()
 
-	except KeyboardInterrupt:
-		driver.quit()
-		print('\nBye.')
-		sys.exit()
+		except KeyboardInterrupt:
+			driver.quit()
+			print('\nBye.')
+			sys.exit()
+		except:
+			error_count += 1
+			if error_count > 100:
+				print('Unrecoverable error occured. Bye.')
+				sys.exit()
 
+			print('Unexpected. Keep going.')
+			sys.stdout.flush()
 
 ###########################################################
 # Execution

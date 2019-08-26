@@ -2,4 +2,4 @@
 
 ./kill
 rm ./nohup.out
-nohup ./worker.py &
+nohup python3 worker.py &
