@@ -16,7 +16,7 @@ def get_password():
     return 'mypassword'
 
 def get_target():
-    return '지구과학'
+    return 'subject'
 
 def get_target_index():
     return 0
