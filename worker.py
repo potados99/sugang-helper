@@ -24,9 +24,8 @@ def try_element(driver, find_by_what, find_with, do_what):
 		EC.presence_of_element_located((find_by_what, find_with)))
 		do_what(element)
 	except:
-		print('Exception occured while \
+		printnow('Exception occured while \
 		trying to do somthing to an element.')
-		sys.stdout.flush()
 
 def try_send_keys(driver, find_by_what, find_with, keys):
 	try_element(driver, find_by_what, find_with, lambda element:element.send_keys(keys))
@@ -72,6 +71,8 @@ def switch_frame_by_id(driver, id):
 	frame = driver.find_element_by_id(id)
 	driver.switch_to.frame(frame)
 
+def printnow(message, end='\n'):
+	printnow(message, end=end)
 
 ###########################################################
 # Routines
@@ -113,8 +114,7 @@ def loop(driver):
 			# Leave a record once a 10.
 			click_count += 1
 			if click_count >= 10:
-				print('.', end='')
-				sys.stdout.flush()
+				printnow('.', end='')
 				click_count = 0
 
 			# Mark it had no error last time.
@@ -130,25 +130,23 @@ def loop(driver):
 			# It means there happened a big problem.
 			if previous_error:
 				continuous_error_count += 1
-				print('!(' + str(continuous_error_count) + ')', end='')
+				printnow('!(' + str(continuous_error_count) + ')', end='')
 
 				if continuous_error_count > 100:
 					# Kill condition
-					print('Unrecoverable error occured.')
+					printnow('Unrecoverable error occured.')
 					finish(driver)
 			else:
 				# Reset count if error finished.
 				continuous_error_count = 0
-				print('!', end='')
-
-			sys.stdout.flush()
+				printnow('!', end='')
 
 			# Mark it had error last time.
 			previous_error = True
 
 def finish(driver):
 		driver.quit()
-		print('\nBye.')
+		printnow('\nBye.')
 		sys.exit()
 
 ###########################################################
@@ -156,13 +154,13 @@ def finish(driver):
 ###########################################################
 
 driver = init()
-print('Driver initialized.')
+printnow('Driver initialized.')
 
 login(driver)
-print('Logged in.')
+printnow('Logged in.')
 
 search(driver)
-print('Query typed.')
+printnow('Query typed.')
 
-print('Starting loop.')
+printnow('Starting loop.')
 loop(driver)
