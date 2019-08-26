@@ -63,8 +63,8 @@ def init():
 def login(driver):
 	try_send_keys_by_id(driver, pref.id_stuno_input(), pref.hakbun())
 	try_send_keys_by_id(driver, pref.id_password_input(), pref.password())
-	try_click_by_xpath(driver, pref.xpath_login_button())
 	try_do_element(driver, By.XPATH, pref.xpath_login_button(), lambda element:printnow(element.text))
+	try_click_by_xpath(driver, pref.xpath_login_button())
 
 # Type query
 def search(driver):
@@ -99,8 +99,13 @@ def loop(driver):
 
 				# To test we've got the right element.
 				if not one_time_task_done:
-					try_do_element(driver, By.XPATH, pref.xpath_search_button(), lambda element:printnow(element.text))
-					try_do_element(driver, By.XPATH, pref.xpath_submit_button(), lambda element:printnow(element.text))
+					# Print search button text.
+					try_do_element(driver, By.XPATH, pref.xpath_search_button(), \
+					lambda element:printnow(element.text))
+
+					# Print submit button text.
+					try_do_element(driver, By.XPATH, pref.xpath_submit_button(), \
+					lambda element:printnow(element.text))
 					one_time_task_done = True
 			else:
 				# Print error here because we gave False to [print_error]
