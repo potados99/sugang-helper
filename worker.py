@@ -73,6 +73,7 @@ def switch_frame_by_id(driver, id):
 
 def printnow(message, end='\n'):
 	print(message, end=end)
+	sys.stdout.flush()
 
 ###########################################################
 # Routines
