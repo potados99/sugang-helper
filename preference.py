@@ -81,3 +81,7 @@ def xpath_search_button():
 def xpath_submit_button():
 	index_str = str(target_index() + 1)
 	return '//table[@class="dataT"]/tbody/tr[' + index_str + ']/td[@class="last"]/a'
+
+# Delay between clicks
+def click_delay():
+	return 0.1

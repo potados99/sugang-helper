@@ -3,48 +3,22 @@
 # This is a main routine file.
 # Implment preference and run it with Python3.
 
+import time
+import sys
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import datetime
-import time
-import sys
+
+from selenium_wrapper import try_send_keys_by_xpath
+from selenium_wrapper import try_click_by_xpath
+from selenium_wrapper import try_send_keys_by_id
+from selenium_wrapper import try_click_by_id
+
+from util import printnow
+from util import print_time
 
 import preference as pref
-
-# Find element with element_info, and try to click it.
-#
-# @param driver			The chromedriver.
-# @param find_by_what	Kind of element_info e.g. by.Xpath
-# @param find_with		Information of element corresponding with find_by_what.
-# @param do_what		What to do to the element.
-def try_element(driver, find_by_what, find_with, do_what):
-	try:
-		element = WebDriverWait(driver, 120).until( \
-		EC.presence_of_element_located((find_by_what, find_with)))
-		do_what(element)
-	except:
-		# Expected error.
-		printnow('!', end='')
-
-def try_send_keys(driver, find_by_what, find_with, keys):
-	try_element(driver, find_by_what, find_with, lambda element:element.send_keys(keys))
-
-def try_click(driver, find_by_what, find_with):
-	try_element(driver, find_by_what, find_with, lambda element:element.click())
-
-def try_send_keys_by_xpath(driver, xpath, keys):
-	try_send_keys(driver, By.XPATH, xpath, keys)
-
-def try_click_by_xpath(driver, xpath):
-	try_click(driver, By.XPATH, xpath)
-
-def try_send_keys_by_id(driver, id, keys):
-	try_send_keys(driver, By.ID, id, keys)
-
-def try_click_by_id(driver, id):
-	try_click(driver, By.ID, xpath)
 
 
 ###########################################################
@@ -72,9 +46,6 @@ def switch_frame_by_id(driver, id):
 	frame = driver.find_element_by_id(id)
 	driver.switch_to.frame(frame)
 
-def printnow(message, end='\n'):
-	print(message, end=end)
-	sys.stdout.flush()
 
 ###########################################################
 # Routines
@@ -103,31 +74,30 @@ def loop(driver):
 	continuous_error_count = 0
 	previous_error = False
 	print_dot_count = 0
-	print_time_count = 200 # Print it at statt
+	print_time_count = 200 # Print it at start
+
 	while True:
 		try:
+			success = True
+
 			# Click search button
-			try_click_by_xpath(driver, pref.xpath_search_button())
-			time.sleep(0.1)
+			success = success and try_click_by_xpath(driver, pref.xpath_search_button(), print_error=False)
+			time.sleep(pref.click_delay())
 
 			# Click submit button
-			try_click_by_xpath(driver, pref.xpath_submit_button())
-			time.sleep(0.1)
+			success = success and try_click_by_xpath(driver, pref.xpath_submit_button(), print_error=False)
+			time.sleep(pref.click_delay())
 
-			# Leave a record once a 10.
-			print_dot_count += 1
-			if print_dot_count >= 10:
-				printnow('.', end='')
-				print_dot_count = 0
-
-			# Print time
+			# Time should be display wheather clicks are succeeded or failed.
 			print_time_count += 1
-			if print_time_count >= 200:
-				now = datetime.datetime.now()
-				printnow('\n' + now.strftime("%Y-%m-%d %H:%M:%S"))
-				print_time_count = 0
 
-			# Mark it had no error last time.
+			# Dot should be display onley when 10 successes past.
+			if success:
+				print_dot_count += 1
+			else:
+				# Print error here because we gave False to [print_error]
+				printnow('!', end='')
+
 			previous_error = False
 
 		except KeyboardInterrupt:
@@ -135,29 +105,40 @@ def loop(driver):
 			finish(driver)
 
 		except:
-			# Finish when encountered over 100 times of
-			# continuos error.
-			# It means there happened a big problem.
+			# On unexpected exception, the normal countings no longer work.
 			if previous_error:
 				continuous_error_count += 1
 				printnow('?(' + str(continuous_error_count) + ')', end='')
-
-				if continuous_error_count > 100:
-					# Kill condition
-					printnow('Unrecoverable error occured.')
-					finish(driver)
 			else:
-				# Reset count if error finished.
 				continuous_error_count = 0
 				printnow('?', end='')
 
-			# Mark it had error last time.
 			previous_error = True
+
+		finally:
+			# Print dot once a 10 successes
+			if print_dot_count >= 10:
+				printnow('.', end='')
+				print_dot_count = 0
+
+			# Print time once a 200 successes
+			if print_time_count >= 200:
+				print_time()
+				print_time_count = 0
+
+			# Finish when encountered over 100 times of
+			# continuos unknown error.
+			# It means there happened a big problem.
+			if continuous_error_count > 100:
+				print_time()
+				printnow('Unrecoverable error occured.')
+				finish(driver)
 
 def finish(driver):
 		driver.quit()
 		printnow('\nBye.')
 		sys.exit()
+
 
 ###########################################################
 # Execution
