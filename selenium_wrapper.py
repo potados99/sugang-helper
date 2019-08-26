@@ -29,9 +29,9 @@ def try_element(driver, find_by_what, find_with, do_what, print_error=True):
 		EC.presence_of_element_located((find_by_what, find_with)))
 		do_what(element)
 		return True
-    except StaleElementReferenceException:
-        if (print_error):
-            printnow('!', end='')
+	except StaleElementReferenceException:
+		if (print_error):
+			printnow('!', end='')
 		return False
 
 def try_send_keys(driver, find_by_what, find_with, keys, print_error=True):
