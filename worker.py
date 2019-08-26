@@ -97,7 +97,7 @@ def search(driver):
 # Click search and submit forever.
 def loop(driver):
 	continuos_error_count = 0
-	previus_error = False
+	previous_error = False
 	while True:
 		try:
 			# Click search button
@@ -113,7 +113,7 @@ def loop(driver):
 			sys.stdout.flush()
 
 			# Mark it had no error last time.
-			previus_error = False
+			previous_error = False
 
 		except KeyboardInterrupt:
 			# Finish when keyboard KeyboardInterrupt raised.
