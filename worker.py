@@ -90,6 +90,9 @@ def loop(driver):
 			success_submit = try_click_by_xpath(driver, pref.xpath_submit_button(), print_error=False)
 			time.sleep(pref.click_delay())
 
+			# Time should be display wheather clicks are succeeded or failed.
+			print_time_count += 1
+
 			# Dot should be display onley when 10 successes past.
 			if success_search and success_submit:
 				print_dot_count += 1
@@ -121,7 +124,8 @@ def loop(driver):
 			# On unexpected exception, the normal countings no longer work.
 			if previous_error:
 				continuous_error_count += 1
-				printnow('?(' + str(continuous_error_count) + ')', end='')
+				printnow('?(' + str(continuous_error_count) + ')')
+				print_time()
 			else:
 				continuous_error_count = 0
 				printnow('?', end='')
@@ -129,9 +133,6 @@ def loop(driver):
 			previous_error = True
 
 		finally:
-			# Time should be display wheather clicks are succeeded or failed.
-			print_time_count += 1
-
 			# Print dot once a 10 successes
 			if print_dot_count >= 10:
 				printnow('.', end='')
