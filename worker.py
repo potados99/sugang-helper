@@ -125,8 +125,7 @@ def loop(driver):
 			# It means there happened a big problem.
 			if previus_error:
 				continuous_error_count += 1
-				print('Continues ' + str(continuous_error_count))
-				sys.stdout.flush()
+				print('!(' + str(continuous_error_count) + ')', end='')
 
 				if continuous_error_count > 100:
 					# Kill condition
@@ -135,8 +134,8 @@ def loop(driver):
 			else:
 				# Reset count if error finished.
 				continuous_error_count = 0
+				print('!', end='')
 
-			print('Unexpected exception. Keep going.')
 			sys.stdout.flush()
 
 			# Mark it had error last time.
