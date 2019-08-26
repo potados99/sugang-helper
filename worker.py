@@ -124,8 +124,8 @@ def loop(driver):
 			# On unexpected exception, the normal countings no longer work.
 			if previous_error:
 				continuous_error_count += 1
-				printnow('?(' + str(continuous_error_count) + ')')
 				print_time()
+				printnow('?(' + str(continuous_error_count) + ')')
 			else:
 				continuous_error_count = 0
 				printnow('?', end='')
