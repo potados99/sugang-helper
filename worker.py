@@ -14,6 +14,7 @@ from selenium_wrapper import try_send_keys_by_xpath
 from selenium_wrapper import try_click_by_xpath
 from selenium_wrapper import try_send_keys_by_id
 from selenium_wrapper import try_click_by_id
+from selenium_wrapper import try_do_element
 
 from util import printnow
 from util import print_time
