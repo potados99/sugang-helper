@@ -122,7 +122,7 @@ def loop(driver):
 
 			# Print time
 			print_time_count += 1
-			if print_time_count >= 100:
+			if print_time_count >= 200:
 				now = datetime.datetime.now()
 				printnow('\n' + now.strftime("%Y-%m-%d %H:%M:%S"))
 				print_time_count = 0
