@@ -72,7 +72,7 @@ def switch_frame_by_id(driver, id):
 	driver.switch_to.frame(frame)
 
 def printnow(message, end='\n'):
-	printnow(message, end=end)
+	print(message, end=end)
 
 ###########################################################
 # Routines
