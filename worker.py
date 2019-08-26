@@ -24,8 +24,7 @@ def try_element(driver, find_by_what, find_with, do_what):
 		EC.presence_of_element_located((find_by_what, find_with)))
 		do_what(element)
 	except:
-		printnow('Exception occured while \
-		trying to do somthing to an element.')
+		printnow('Exception occured while trying to do somthing to an element.')
 
 def try_send_keys(driver, find_by_what, find_with, keys):
 	try_element(driver, find_by_what, find_with, lambda element:element.send_keys(keys))
