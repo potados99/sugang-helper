@@ -25,7 +25,7 @@ def try_element(driver, find_by_what, find_with, do_what):
 		do_what(element)
 	except:
 		print('Exception occured while \
-		trying to do somthing to an element at ' + xpath + '.')
+		trying to do somthing to an element.')
 
 def try_send_keys(driver, find_by_what, find_with, keys):
 	try_element(driver, find_by_what, find_with, lambda element:element.send_keys(keys))
@@ -127,7 +127,7 @@ def loop(driver):
 			# Finish when encountered over 100 times of
 			# continuos error.
 			# It means there happened a big problem.
-			if previus_error:
+			if previous_error:
 				continuous_error_count += 1
 				print('!(' + str(continuous_error_count) + ')', end='')
 
@@ -143,7 +143,7 @@ def loop(driver):
 			sys.stdout.flush()
 
 			# Mark it had error last time.
-			previus_error = True
+			previous_error = True
 
 def finish(driver):
 		driver.quit()
